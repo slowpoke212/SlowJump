@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="480" height="320"></canvas>
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var x = canvas.width/2;
+var y = canvas.height-50;
+var height = 50
+var width = 50
+var dx = 2;
+var dy = -2;
+var odx = 2;
+var ody = -2;
+var rightPressed = false;
+var leftPressed = false;
+var UpPressed = false;
+var ox = canvas.width/2;
+var oy = canvas.height-150;
+var fsc = 0
+var fps = 10
+var obsize = 30
+var obgrow = 1
+function drawBall() {
+    ctx.beginPath();
+    ctx.rect(x, y, width, height);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+function drawob() {
+    ctx.beginPath();
+    ctx.arc(ox, oy, obsize, 0, Math.PI*2)
+    ctx.fillStyle = "#000000";
+    ctx.fill();
+    ctx.closePath();
+}
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
+	drawob(0, 0);
+	if(rightPressed) {
+    x += dx;
+	 if (x + width > canvas.width){
+        x = canvas.width - width;
+    }
+}
+	else if(leftPressed) {
+    x += dy;
+	if (x < 0){
+        x = 0;
+    }
+}
+	if(ox + odx > canvas.width-obsize || ox + odx < obsize) {
+        odx = -odx;
+    }
+    if(oy + ody > canvas.height-obsize || oy + ody < obsize) {
+        ody = -ody;
+		
+    }
+	
+			
+		
+    
+
+    ox += odx;
+    oy += ody;
+if (x < ox + obsize &&
+   x + width > ox &&
+   y < oy + obsize &&
+   y + height > obsize) {
+	alert("Lmao u lost reload the page to start again noob");
+}
+fsc += 1
+if (fsc > 10) {
+	obsize += obgrow
+	fsc = 0
+	if (oy > canvas.height-obsize) {
+		oy -= obsize
+}
+	if (ox > canvas.width-obsize){
+		ox -= obsize
+	}
+	if (obsize > 50) {obgrow = -1}
+	if (obsize < 5) {obgrow = 1}
+}
+}
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+function keyDownHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = false;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = false;
+    }
+}
+	
+setInterval(draw, 10);
+	
+</script>
+
+</body>
+</html>
